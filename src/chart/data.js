@@ -1,0 +1,21 @@
+export const data_default =
+{
+    "labels":["Bruno","T.I.","Administração","Comercial","Operação","Instalação","Manutenção","GPS|GPRS","Site","CFTV","Teste","Teste","Teste","Teste","Teste"
+    ],
+    "datasets":[
+        {
+            "data":[50,60,70,80,90],
+            "backgroundColor":["green","blue","red","purple","grey"]
+        },
+        {
+            "data":[50,50,70,50,90],
+            "backgroundColor":["#F7464A","#46BFBD","#FDB45C","#0662fa","#4D5360"
+            ]
+        },
+        {
+            "data":[50,50,70,50,90],
+            "backgroundColor":["#b0885e","#6f5742","#9d1d22","#193443","#14161d"
+            ]
+        }
+    ]
+};
