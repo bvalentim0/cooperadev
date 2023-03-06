@@ -1,34 +1,66 @@
 <script>
     import {ArcElement, CategoryScale, Chart, Legend, Title, Tooltip} from "chart.js";
     import {data_default} from "./data.js";
-    import {Doughnut, Pie} from "svelte-chartjs";
+    import {Doughnut} from "svelte-chartjs";
     import {options} from "./options.js";
 
     Chart.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
-
-    let files;
     let data = data_default;
 
-    $: if (files) {
-        console.log(files);
-        for (const file of files) {
-            console.log(`${file.name}: ${file.size} bytes`);
-            file
-                .text()
-                .then((e)=>{
-                    data = JSON.parse(e);
-                })
-        }
-    }
+    const spreadsheetID = "19iUltt-WpJ3bpD5qJP4kuJuVPkYVNgDNitAEE_36uXg";
+    const url = `https://docs.google.com/spreadsheets/d/${spreadsheetID}/gviz/tq?tqx=out:json`;
+
+    fetch(url)
+    .then(res => res.text())
+    .then(text => {
+        const json = JSON.parse(text.replaceAll("/*O_o*/","").replaceAll("google.visualization.Query.setResponse(","").replaceAll(");",""));
+        data.labels = [];
+        data.datasets = [];
+        
+        json.table.cols.forEach(col => {
+            if(col.label !== "#"){
+                data.labels.push(col.label);
+            }
+           
+        });
+        
+        json.table.rows.forEach(row => {
+            let dataSetModel = {"data":[], "backgroundColor":[]};
+ 
+            row.c.forEach(element => {
+                if(element.v !== "#"){
+                    dataSetModel.data.push(element.v);
+                    dataSetModel.backgroundColor.push(randomHexColor());
+                }else{
+                    data.datasets.push(dataSetModel);
+                    dataSetModel = {"data":[], "backgroundColor":[]};
+                }
+                
+            });
+            data.datasets.push(dataSetModel)
+        });
+
+    });
+
+
+function randomHexColor() {
+    let [r,g,b] =randomRgbColor();
+    let hr = r.toString(16).padStart(2, '0');
+    let hg = g.toString(16).padStart(2, '0');
+    let hb = b.toString(16).padStart(2, '0');
+    return "#" + hr + hg + hb;
+}
+
+function randomRgbColor() {
+    let r = randomInteger(255);
+    let g = randomInteger(255);
+    let b = randomInteger(255);
+    return [r,g,b];
+}
+
+function randomInteger(max) {
+    return Math.floor(Math.random()*(max + 1));
+}
 
 </script>
 <Doughnut {data} {options} />
-<div>
-    <a href="../../public/data_template.json" target="_blank">data_template.json Template</a>
-</div>
-<div>
-    <label for="dataFile">Upload data_template.json file:</label>
-    <input accept="application/json" id="dataFile" name="dataFile" type="file" bind:files/>
-</div>
-
-

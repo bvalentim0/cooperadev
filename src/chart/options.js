@@ -1,5 +1,5 @@
 import {Chart} from "chart.js";
-
+    
 export const options = {
     responsive: true,
     plugins: {
