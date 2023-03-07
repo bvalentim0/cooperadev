@@ -3,7 +3,7 @@
 </script>
 
 <main>
-  <div class="card">
-    <DoughnutMultiSeries />
+  <div class="container container-custom">
+    <DoughnutMultiSeries />      
   </div>
 </main>
