@@ -1,5 +1,3 @@
-import { Chart } from "chart.js";
-
 const image = new Image();
 image.src = 'https://www.chartjs.org/img/chartjs-logo.svg';
 
