@@ -1,14 +1,19 @@
 <script>
     import {ArcElement, CategoryScale, Chart, Legend, Title, Tooltip} from "chart.js";
+    import ChartDataLabels from 'chartjs-plugin-datalabels';
     import {data_default} from "./data.js";
     import {Doughnut} from "svelte-chartjs";
     import {options} from "./options.js";
 
-    Chart.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
+    Chart.register(Title, Tooltip, Legend, ArcElement, CategoryScale,ChartDataLabels);
     let data = data_default;
 
     const spreadsheetID = "19iUltt-WpJ3bpD5qJP4kuJuVPkYVNgDNitAEE_36uXg";
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheetID}/gviz/tq?tqx=out:json`;
+
+    window.onscroll = function () {
+        scrollRotate();
+    };
 
     fetch(url)
     .then(res => res.text())
@@ -62,5 +67,10 @@ function randomInteger(max) {
     return Math.floor(Math.random()*(max + 1));
 }
 
+function scrollRotate() {
+    document.querySelector("canvas").style.transform = "rotate(" + window.pageYOffset/2 + "deg)";
+}
+
 </script>
-<Doughnut {data} {options} />
+<Doughnut {data} {options}/>
+

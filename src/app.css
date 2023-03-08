@@ -10,6 +10,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100vh;
   background-position: center;
+  height: 3000px;
 }
 canvas {
   background-repeat: no-repeat;
