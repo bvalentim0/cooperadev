@@ -12,13 +12,7 @@ body {
   background-position: center;
   height: 3000px;
 }
-canvas {
-  background-repeat: no-repeat;
-  margin: 0px !important;
-  height: 91vh !important;
-  width: 98vw !important;
-  padding: 2vh !important;  
-}
+
 container-custom {
   width: 100vw !important;
   height: 85vh !important;

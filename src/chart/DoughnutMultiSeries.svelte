@@ -72,5 +72,5 @@ function scrollRotate() {
 }
 
 </script>
-<Doughnut {data} {options}/>
+<Doughnut {data} {options} />
 
