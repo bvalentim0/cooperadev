@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "chart.js": "^4.2.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "daisyui": "^2.51.3",
     "svelte-chartjs": "^3.1.2"
   }
