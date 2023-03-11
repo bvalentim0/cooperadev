@@ -8,7 +8,7 @@
     Chart.register(Title, Tooltip, Legend, ArcElement, CategoryScale,ChartDataLabels);
     let data = data_default;
 
-    const spreadsheetID = "19iUltt-WpJ3bpD5qJP4kuJuVPkYVNgDNitAEE_36uXg";
+    const spreadsheetID = "1dKpiklhhPBdCRuJE1Cc95kwxVTDzQ9H23kTc42Em_Ik";
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheetID}/gviz/tq?tqx=out:json`;
 
     window.onscroll = function () {
@@ -22,31 +22,23 @@
         data.labels = [];
         data.datasets = [];
         
-        json.table.cols.forEach(col => {
-            if(col.label !== "#"){
-                data.labels.push(col.label);
-            }
-           
-        });
-        
-        json.table.rows.forEach(row => {
-            let dataSetModel = {"data":[], "backgroundColor":[]};
- 
-            row.c.forEach(element => {
-                if(element.v !== "#"){
-                    dataSetModel.data.push(element.v);
-                    dataSetModel.backgroundColor.push(randomHexColor());
-                }else{
-                    data.datasets.push(dataSetModel);
-                    dataSetModel = {"data":[], "backgroundColor":[]};
-                }
-                
-            });
-            data.datasets.push(dataSetModel)
-        });
+        let list = json.table.rows.map(e => e.c).map(e => e[2]).map(e => e.v);
+        let grouped =list.map(value => [value, list.filter(str => str === value).length]);
+        let uniqueGroups = removeDuplicates(grouped);
 
+        uniqueGroups.forEach((g) =>{
+            if(g[0] === "Cargo"){ return;}
+            let dataSetModel = {"data":[], "backgroundColor":[]};
+            dataSetModel.data.push(g[1]);
+            dataSetModel.backgroundColor.push(randomHexColor());
+
+            data.datasets.push(dataSetModel);
+            data.labels.push(g[0] + " : " + g[1]);
+            
+        })
     });
 
+    
 
 function randomHexColor() {
     let [r,g,b] =randomRgbColor();
@@ -71,6 +63,27 @@ function scrollRotate() {
     document.querySelector("canvas").style.transform = "rotate(" + window.pageYOffset/2 + "deg)";
 }
 
+function removeDuplicates(grouped) {
+    const groupedOrdered = grouped.sort();
+    let unique = [];
+
+    groupedOrdered.forEach(element => {
+        if(!hasElement(unique,element)){
+            unique.push(element);
+        }
+    });
+    return unique;
+}
+
+function hasElement(unique, element){
+    let has = false;
+    unique.forEach(e=> {
+        if(e[0]=== element[0]){
+            has = true;
+        }
+    });
+    return has;
+}
 </script>
 <Doughnut {data} {options} />
 
